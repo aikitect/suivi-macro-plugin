@@ -1,0 +1,13 @@
+{
+  "name": "suivi-macro",
+  "owner": {
+    "name": "Eric Antoni"
+  },
+  "plugins": [
+    {
+      "name": "suivi-macro",
+      "source": "./plugin",
+      "description": "Skill suivi-macro et connecteur MCP du backend, en une installation."
+    }
+  ]
+}

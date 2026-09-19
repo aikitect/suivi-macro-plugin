@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "suivi-macro": {
+      "type": "http",
+      "url": "https://suivi-macro-backend.vercel.app/mcp"
+    }
+  }
+}

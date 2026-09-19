@@ -1,0 +1,15 @@
+{
+  "name": "suivi-macro",
+  "version": "4.0.0",
+  "description": "Coach nutrition et suivi macro-nutritionnel du foyer : la skill suivi-macro et le connecteur MCP du backend (journal, profils, aliments, bilans).",
+  "author": {
+    "name": "Eric Antoni"
+  },
+  "homepage": "https://suivi-macro-backend.vercel.app",
+  "repository": "https://github.com/aikitect/suivi-macro-plugin",
+  "keywords": [
+    "nutrition",
+    "macros",
+    "mcp"
+  ]
+}
