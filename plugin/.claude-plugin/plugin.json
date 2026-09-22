@@ -1,6 +1,6 @@
 {
   "name": "suivi-macro",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Coach nutrition et suivi macro-nutritionnel du foyer : la skill suivi-macro et le connecteur MCP du backend (journal, profils, aliments, bilans).",
   "author": {
     "name": "Eric Antoni"

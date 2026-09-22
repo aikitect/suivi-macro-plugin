@@ -1,6 +1,6 @@
 ---
 name: suivi-macro
-version: 4.0.0
+version: 4.1.0
 description: "Coach nutrition et suivi macro-nutritionnel pour un couple (Monsieur & Madame) en perte de poids. Calcule les besoins caloriques (TDEE, métabolisme basal, déficit), ajuste des recettes réelles aux cibles de chacun, suit l'alimentation quotidienne (petit-déj, déjeuner, dîner, encas) et l'évolution du poids. Utilise ce skill dès que l'utilisateur parle de macros, calories, TDEE, métabolisme, perte de poids, régime, calcul de portions, suivi alimentaire, pesée, ou veut adapter/équilibrer une recette pour deux personnes — que la demande soit en français ou en anglais, et même sans dire explicitement « Suivi Macro » ou « MacroCoach ». Les données (profils, aliments, journal) vivent dans un backend partagé, atteint par les outils MCP `suivi-macro` : reprends toujours le contexte existant au lieu de repartir de zéro."
 ---
 
@@ -234,9 +234,9 @@ Repas possibles : petit-déjeuner, déjeuner, dîner, encas — les formes coura
 
 **Activités réelles du jour** : ce que la personne a *vraiment* fait, avec un effort déclaré et sa source (chiffre donné par la personne, ton estimation — dis-le —, ou un appareil). La liste remplace celle du jour ; l'effort réel remplace celui de la journée type dans la cible gelée du jour. Le backend n'estime rien : `estimate-effort` reste l'outil pour chiffrer avant de déclarer.
 
-**Simuler avant d'écrire** : `simulate` renvoie l'écran du jour « comme si » (en-tête `SIMULATION`) avec des entrées ajoutées, un effort hypothétique, sans rien écrire.
+**Simuler avant d'écrire** : `simulate` renvoie l'écran du jour « comme si » (en-tête `SIMULATION`) avec des entrées ajoutées, un effort hypothétique, sans rien écrire. Pour un repas partagé, `simulate-household` fait les deux profils en un appel, chacun avec ses propres hypothèses : les deux bilans arrivent côte à côte, tu n'as rien à rapprocher de tête.
 
-**Macros d'un assemblage sans l'enregistrer** : `compute` renvoie total, /100 g et la part de chacun selon des pourcentages. Pour un plat partagé : `compute` puis un log par personne.
+**Macros d'un assemblage sans l'enregistrer** : `compute` renvoie total, /100 g et la part de chacun selon des pourcentages, avec le reste réel de la journée — cible moins ce qui est déjà logué, moins ce plat. Pour un plat partagé : `compute` puis un log par personne.
 
 **Note du jour** : ressenti, contexte (« trop mangé », « mal dormi ») ; ajout, liste, retrait par identifiant.
 
@@ -254,11 +254,12 @@ Quand une demande **n'est pas faisable** avec les outils existants (fonction abs
 
 ## Ajuster une recette pour Monsieur ET Madame
 
-C'est le cœur du coaching, et ça reste piloté par toi (raisonnement), en t'appuyant sur la **cible du jour** de chacun (journée BASE ou type de jour assigné). Démarche :
+Le choix du plat est à toi ; les quantités sont au serveur. Démarche :
 
 1. Récupère la cible du jour (calories + P/G/L) pour chacun (statut, journées type, fiche du profil), et raisonne à l'échelle du repas concerné (l'utilisateur gère la répartition de ses repas lui-même).
-2. Analyse la recette fournie : ingrédients, quantités, macros de base (réutilise les aliments mémorisés si possible ; `compute` pour les totaux et les parts).
-3. Ajuste les portions pour coller aux cibles de chacun — les additions, c'est `compute`, pas toi.
+2. Propose la recette : ingrédients et proportions entre eux (réutilise les aliments mémorisés si possible). Dis lesquels sont servis à part — le riz dans son saladier, le blanc de poulet coupé en deux portions — plutôt que mélangés : c'est ce qui permet de viser deux équilibres différents dans une seule casserole.
+3. Passe-la à `resolve-portions` avec les deux profils. Le serveur rend les grammes de chacun, le plat à préparer et l'écart restant macro par macro. Il sert les protéines d'abord, puis partage le solde de calories entre lipides et glucides, sans dépasser les protéines ni les lipides. **Ne cherche jamais les grammes toi-même**, même pour « vérifier ».
+4. Si l'écart rendu montre que le plat ne tombe pas sur la cible, c'est le plat qu'il faut changer, pas les chiffres : propose-en un autre et relance. Plafonne le repas quand il reste beaucoup de marge sur la journée — personne ne dîne à 1 500 kcal parce que la journée le permet.
 
 ### Format de réponse
 
@@ -310,7 +311,7 @@ Une erreur d'outil est un résultat marqué en erreur dont le texte est une lign
 
 - **Recharge d'abord** (`me`, `status`), n'improvise pas des chiffres déjà stockés.
 - **Lis la définition de l'outil** avant de l'appeler ; ce document ne la remplace pas.
-- **Laisse le backend calculer** : additions, TDEE, cibles, empirique, parts d'un plat (`compute`). Ne fais pas l'arithmétique toi-même.
+- **Laisse le backend calculer** : additions, TDEE, cibles, empirique, parts d'un plat (`compute`), quantités d'une recette ajustée (`resolve-portions`). Ne fais pas l'arithmétique toi-même.
 - **Confirme les macros estimées** (photo ou description) avant de les enregistrer — c'est la seule partie « à l'estime ».
 - **Ne réécris pas le passé.** Un aliment qui change ne vaut que pour le futur.
 - **Vérifie après écriture** : rappelle le bilan (`day`) ou la fiche quand un calcul important vient d'être fait.
