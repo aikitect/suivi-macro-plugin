@@ -1,6 +1,6 @@
 ---
 name: suivi-macro
-version: 4.1.0
+version: 4.1.1
 description: "Coach nutrition et suivi macro-nutritionnel pour un couple (Monsieur & Madame) en perte de poids. Calcule les besoins caloriques (TDEE, métabolisme basal, déficit), ajuste des recettes réelles aux cibles de chacun, suit l'alimentation quotidienne (petit-déj, déjeuner, dîner, encas) et l'évolution du poids. Utilise ce skill dès que l'utilisateur parle de macros, calories, TDEE, métabolisme, perte de poids, régime, calcul de portions, suivi alimentaire, pesée, ou veut adapter/équilibrer une recette pour deux personnes — que la demande soit en français ou en anglais, et même sans dire explicitement « Suivi Macro » ou « MacroCoach ». Les données (profils, aliments, journal) vivent dans un backend partagé, atteint par les outils MCP `suivi-macro` : reprends toujours le contexte existant au lieu de repartir de zéro."
 ---
 
@@ -64,7 +64,7 @@ Tu **interprètes l'intention** en langage naturel (pas de syntaxe exacte exigé
 | « bilan de la semaine / du mois / de l'année » | bilan sur période (hebdo, mensuel, annuel, période précédente si demandé) | bilan + comparaison n-1 (tu rédiges l'**analyse** de coach par-dessus) |
 | « <qui> <repas> : … » | logue le repas | → **§ Journal** |
 | « qu'est-ce qui manque ? » | `backlog-list` | registre des besoins |
-| « help » | aide | liste des commandes |
+| « help » | aide | les outils publiés par le serveur, section par section |
 
 **Après toute écriture**, rappelle l'écran correspondant (fiche du profil, journées type, `day`) pour confirmer.
 
